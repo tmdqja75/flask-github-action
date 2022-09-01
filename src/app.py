@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 
 app = Flask(__name__)
@@ -5,7 +6,9 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello_world():
-    return "<p>Hello, World!</p>"
+    super_secret = os.getenv('super_secret')
+    return f"<p>Hello, World! {super_secret}</p>"
+    
 
 
 if __name__ == "__main__":

@@ -8,6 +8,6 @@ COPY src/ /tmp/app
 
 WORKDIR /tmp/app
 
-ENV SUPER_SECRET $SECRET_VALUE
+ENV SUPER_SECRET $SUPER_SECRET
 
 CMD ["gunicorn", "--bind", "0.0.0.0:5001", "app:app"]

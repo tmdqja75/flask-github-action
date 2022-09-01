@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello_world():
-    super_secret = os.getenv('super_secret')
+    super_secret = os.getenv('SECRET_VALUE')
     return f"<p>Hello, World! {super_secret}</p>"
     
 

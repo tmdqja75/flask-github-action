@@ -1,16 +1,15 @@
-from argparse import ArgumentParser
+import os
 from flask import Flask
 
-def create_app(secret:str):
-    app = Flask(__name__)
-    app.config['secret'] = secret
-    print('Passed item: ', app.config['secret'])
-    return app
+app = Flask(__name__)
 
-if __name__ == '__main__':
-  
-  parser = ArgumentParser()
-  parser.add_argument('-secret')
-  args = parser.parse_args()
-  app = create_app(secret=args.secret)
-  app.run(host="0.0.0.0", port=5001)
+
+@app.route("/")
+def hello_world():
+    super_secret = os.getenv('SECRET_VALUE')
+    return f"<p>Hello, World! {super_secret}</p>"
+    
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5001)

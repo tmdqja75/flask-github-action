@@ -8,7 +8,7 @@ COPY src/ /tmp/app
 
 WORKDIR /tmp/app
 
-ARG SECRET_VALUE=${SECRET_VALUE}
-ENV SECRET_VALUE=${SECRET_VALUE}
+ARG SECRET_VALUE
+ENV SECRET_VALUE=$SECRET_VALUE
 
 CMD ["gunicorn", "--bind", "0.0.0.0:5001", "app:app"]

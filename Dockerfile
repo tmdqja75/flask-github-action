@@ -12,4 +12,5 @@ WORKDIR /tmp/app
 ARG SECRET_VALUE
 ENV SECRET_VALUE=$SECRET_VALUE
 
-CMD ["gunicorn", "--bind", "0.0.0.0:5001", "app:create_app()"]
+ENTRYPOINT ["gunicorn", "app:create_app()","--bind"]
+CMD ["0.0.0.0:5002"]

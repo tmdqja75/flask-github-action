@@ -37,8 +37,9 @@ jobs:
           cat $GITHUB_ENV
     - name: Build and Run Docker
       run: |
+        docker rm image-classifier-flask
         docker build -t tutorial/1-flask-deployment --build-arg SECRET_VALUE='${{ secrets.SECRET_VALUE }}' .
-        docker run -dp 5001:5001 tutorial/1-flask-deployment
+        docker run -dp 5001:5001 --name image-classifier-flask tutorial/1-flask-deployment
 
 
   test-deployed:

@@ -1,0 +1,65 @@
+name: Deploy
+
+on:
+  push:
+    branch:
+      - master
+
+jobs:
+  test:
+    name: Unit Test
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+          architecture: 'x64'
+      - name: Install requirements
+        run: pip install -r requirements.txt
+      - name: set pythonpath
+        run: |
+          echo PYTHONPATH=$GITHUB_WORKSPACE/src >> $GITHUB_ENV
+          cat $GITHUB_ENV
+      - name: Run tests
+        run: pytest tests/ --ignore=tests/test_deployed_flask_app.py
+
+  build:
+    needs: test
+    name: Deploy Flask App
+    runs-on: self-hosted
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v2
+    - name: set pythonpath
+      run: |
+          echo PYTHONPATH=$GITHUB_WORKSPACE/src >> $GITHUB_ENV
+          cat $GITHUB_ENV
+    - name: Build and Run Docker
+      run: |
+        docker build -t tutorial/1-flask-deployment --build-arg SECRET_VALUE='${{ secrets.SECRET_VALUE }}' .
+        docker run -dp 5001:5001 tutorial/1-flask-deployment
+
+
+  test-deployed:
+    needs: build
+    name: Deployment Test
+    runs-on: self-hosted
+    steps:
+      - name: Sleep for 60 seconds
+        run: sleep 60s
+        shell: bash
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+          architecture: 'x64'
+      - name: Install requirements
+        run: pip install -r requirements.txt
+      - name: set pythonpath
+        run: |
+          echo PYTHONPATH=$GITHUB_WORKSPACE/src >> $GITHUB_ENV
+          echo FLASK_SERVER_URL='${{ secrets.FLASK_SERVER_URL }}' >> $GITHUB_ENV
+          cat $GITHUB_ENV
+      - name: Run tests
+        run: pytest tests/test_deployed_flask_app.py

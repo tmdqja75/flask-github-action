@@ -15,6 +15,6 @@ ENV SECRET_VALUE=$SECRET_VALUE
 
 EXPOSE 8080
 
-ENTRYPOINT ["gunicorn", "app:create_app()","--bind"]
+# ENTRYPOINT ["gunicorn", "app:create_app()","--bind"]
 
-CMD ["0.0.0.0:8080"]
+CMD ["/bin/bash", "-c", "python src/app.py"]

@@ -24,49 +24,49 @@ jobs:
       # - name: Run tests
       #   run: pytest tests/ --ignore=tests/test_deployed_flask_app.py
 
-  deploymenttest:
-    needs: unittest
-    name: Deployment Test
-    runs-on: self-hosted
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v2
+  # deploymenttest:
+  #   needs: unittest
+  #   name: Deployment Test
+  #   runs-on: self-hosted
+  #   steps:
+  #     - name: Check out the repo
+  #       uses: actions/checkout@v2
 
-      - name: Set PYTHONPATH
-        run: |
-            echo PYTHONPATH=$GITHUB_WORKSPACE/src >> $GITHUB_ENV
-            cat $GITHUB_ENV
+  #     - name: Set PYTHONPATH
+  #       run: |
+  #           echo PYTHONPATH=$GITHUB_WORKSPACE/src >> $GITHUB_ENV
+  #           cat $GITHUB_ENV
 
-      - name: Build and Run Docker for Test
-        run: |
-          docker rm -f image-classifier-flask-test
-          docker build -t tutorial/1-flask-deployment --build-arg SECRET_VALUE='${{ secrets.SECRET_VALUE }}' .
-          docker run -dp 5001:5001 --name image-classifier-flask-test tutorial/1-flask-deployment 0.0.0.0:5001
+  #     - name: Build and Run Docker for Test
+  #       run: |
+  #         docker rm -f image-classifier-flask-test
+  #         docker build -t tutorial/1-flask-deployment --build-arg SECRET_VALUE='${{ secrets.SECRET_VALUE }}' .
+  #         docker run -dp 8080:8080 --name image-classifier-flask-test tutorial/1-flask-deployment 0.0.0.0:5001
 
-      - name: Sleep for 60 seconds
-        run: sleep 60s
-        shell: bash
+  #     - name: Sleep for 60 seconds
+  #       run: sleep 60s
+  #       shell: bash
 
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
-          architecture: 'x64'
+  #     - uses: actions/setup-python@v2
+  #       with:
+  #         python-version: '3.8'
+  #         architecture: 'x64'
 
-      - name: Install requirements
-        run: pip install -r requirements.txt
+  #     - name: Install requirements
+  #       run: pip install -r requirements.txt
 
-      - name: Set PYTHONPATH
-        run: |
-          echo PYTHONPATH=$GITHUB_WORKSPACE/src >> $GITHUB_ENV
-          echo FLASK_SERVER_URL='${{ secrets.FLASK_SERVER_URL }}' >> $GITHUB_ENV
-          cat $GITHUB_ENV
+  #     - name: Set PYTHONPATH
+  #       run: |
+  #         echo PYTHONPATH=$GITHUB_WORKSPACE/src >> $GITHUB_ENV
+  #         echo FLASK_SERVER_URL='${{ secrets.FLASK_SERVER_URL }}' >> $GITHUB_ENV
+  #         cat $GITHUB_ENV
 
-      - name: Run tests
-        run: pytest tests/test_deployed_flask_app.py
+  #     - name: Run tests
+  #       run: pytest tests/test_deployed_flask_app.py
 
-      - name: Remove test container
-        run: |
-          docker rm -f image-classifier-flask-test
+  #     - name: Remove test container
+  #       run: |
+  #         docker rm -f image-classifier-flask-test
 
   build:
     needs: deploymenttest
@@ -75,7 +75,7 @@ jobs:
     steps:
 
       - name: Check out the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       
       - name: Set PYTHONPATH
         run: |

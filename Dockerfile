@@ -13,5 +13,6 @@ WORKDIR /home/ubuntu
 ARG SECRET_VALUE
 ENV SECRET_VALUE=$SECRET_VALUE
 
-ENTRYPOINT ["gunicorn", "app:create_app()","--bind"]
+ENTRYPOINT ["/usr/bin/flask","app"]
+
 CMD ["0.0.0.0:8080"]

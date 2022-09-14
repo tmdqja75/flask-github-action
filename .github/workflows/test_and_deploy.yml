@@ -21,8 +21,8 @@ jobs:
         run: |
           echo PYTHONPATH=$GITHUB_WORKSPACE/src >> $GITHUB_ENV
           cat $GITHUB_ENV
-      - name: Run tests
-        run: pytest tests/ --ignore=tests/test_deployed_flask_app.py
+      # - name: Run tests
+      #   run: pytest tests/ --ignore=tests/test_deployed_flask_app.py
 
   deploymenttest:
     needs: unittest

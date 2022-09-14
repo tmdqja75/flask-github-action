@@ -69,7 +69,7 @@ jobs:
   #         docker rm -f image-classifier-flask-test
 
   build:
-    needs: deploymenttest
+    # needs: deploymenttest
     name: Deploy Flask App
     runs-on: self-hosted
     steps:

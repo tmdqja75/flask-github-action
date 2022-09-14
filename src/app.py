@@ -8,7 +8,7 @@ from datetime import datetime
 import pandas as pd
 import requests
 import werkzeug
-from flask import (Flask, abort, current_app, request, send_file,
+from flask import (Flask, Blueprint, abort, current_app, request, send_file,
                    send_from_directory)
 from flask_restful import Api, Resource, reqparse
 from werkzeug.utils import secure_filename
@@ -18,8 +18,18 @@ from deepface import DeepFace
 from deepface.detectors.FaceDetector import build_model
 from deteted_model.commons.yoloface.face_detector import YoloDetector
 
-app = Flask(__name__)
-app.secret_key = "secret key"
+route_blueprint = Blueprint("route_blueprint", __name__)
+
+
+def create_app():
+    app = Flask(__name__)
+    app.secret_key = "secret key"
+    app.register_blueprint(route_blueprint)
+    return 
+
+# app = Flask(__name__)
+# app.secret_key = "secret key"
+
 
 os_name = platform.system()
 root = "/"
@@ -77,11 +87,11 @@ def output_file(data, code, headers):
     )
     return response
 
-@app.route('/test/check', methods=['POST'])
+@route_blueprint.route('/test/check', methods=['POST'])
 def feedback():
     return {"response": "model is Working"}
 
-@app.route('/image/api', methods=['POST'])
+@route_blueprint.route('/image/api', methods=['POST'])
 def image_api():
     # 딥러닝 모델이 돌고 있으면, 모델이 돌고 있다는 값 반환하고 post 함수 exit.
     with open(cleandata+'/data/running.txt', 'r') as f:
@@ -181,7 +191,7 @@ def send_csvfile(img_owner):
     # return_json = json.dumps(return_dict, indent=2)
     # print(return_json, type(return_json))
     return return_dict
-@app.post("/image/tojson")
+@route_blueprint.post("/image/tojson")
 def send_json(returnJson):
     return returnJson
 
@@ -190,5 +200,6 @@ def send_json(returnJson):
     
 # 서버에서 돌릴 시
 if __name__=="__main__":
-   app.run(host='0.0.0.0', port=8080)
+    app = create_app()
+    app.run(host='0.0.0.0', port=8080)
  

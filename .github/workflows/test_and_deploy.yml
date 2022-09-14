@@ -84,7 +84,7 @@ jobs:
       
       - name: Build and Run Docker
         run: |
-          # docker rm -f image-classifier-flask
+          docker rm -f image-classifier-flask
           docker build -t tutorial/1-flask-deployment --build-arg SECRET_VALUE='${{ secrets.SECRET_VALUE }}' .
           docker run -dp 8080:8080 --name image-classifier-flask tutorial/1-flask-deployment
 

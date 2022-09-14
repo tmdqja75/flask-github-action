@@ -77,6 +77,9 @@ def output_file(data, code, headers):
     )
     return response
 
+@app.route('/test/check', methods=['POST'])
+def feedback():
+    return {"response": "model is Working"}
 
 @app.route('/image/api', methods=['POST'])
 def image_api():

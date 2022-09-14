@@ -4,10 +4,11 @@ COPY requirements.txt requirements.txt
 
 RUN pip install -r requirements.txt
 
-COPY src/ /tmp/app
-COPY models /tmp/app/models
+COPY src/ /home/ec2-user
+COPY result /home/ec2-user/result
+COPY data/ /home/ec2-user/data
 
-WORKDIR /tmp/app
+WORKDIR /home/ec2-user
 
 ARG SECRET_VALUE
 ENV SECRET_VALUE=$SECRET_VALUE

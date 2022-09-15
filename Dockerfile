@@ -14,7 +14,6 @@ ARG SECRET_VALUE
 ENV SECRET_VALUE=$SECRET_VALUE
 
 EXPOSE 8080
-
 # ENTRYPOINT ["gunicorn", "app:create_app()","--bind"]
 # 
 CMD ["/bin/bash", "-c", "python src/app.py"]

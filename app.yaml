@@ -1,0 +1,11 @@
+# How we launch our file
+entrypoint: gunicorn -b :$PORT main:app
+# Which runtime we will used i have used python 3.7
+runtime: python310
+# These setting are for Deep Learning Models
+# cpu for our processor
+# memory_gb for our ram
+instance_class: F4
+resources: 
+  cpu: 2
+  memory_gb: 8
